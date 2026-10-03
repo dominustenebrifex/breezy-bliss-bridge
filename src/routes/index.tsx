@@ -1,24 +1,39 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { AmbientDecor, Envelope, QuestionButtons } from "../components/romantic";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({ meta: [
+    { title: "To My Bachcha ♡" },
+    { name: "description", content: "A small, handmade love letter for Yashvi." },
+    { property: "og:title", content: "To My Bachcha ♡" },
+    { property: "og:description", content: "A small, handmade love letter for Yashvi." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const navigate = useNavigate();
+  const [opening, setOpening] = useState(false);
+  const sayYes = () => {
+    if (opening) return;
+    setOpening(true);
+    window.setTimeout(() => void navigate({ to: "/letter" }), 1450);
+  };
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className={`intro-page ${opening ? "is-leaving" : ""}`}>
+      <AmbientDecor dense />
+      <div className="intro-content">
+        <p className="eyebrow">a very important note</p>
+        <h1>To My Bachcha <span>♡</span></h1>
+        <div className="envelope-stage"><Envelope open={opening} /></div>
+        <h2>{opening ? "I knew you'd say yes ♡" : "Wanna see what your idiot wrote back? ♡"}</h2>
+        {!opening && <QuestionButtons onYes={sayYes} />}
+        {opening && <div className="yes-hearts" aria-hidden="true"><span>♡</span><span>♡</span><span>♡</span></div>}
+      </div>
+      <p className="tiny-signoff">sealed with far too many feelings</p>
+    </main>
   );
 }
