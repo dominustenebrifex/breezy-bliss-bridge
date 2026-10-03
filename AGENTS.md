@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the romantic experience as three client-side routes (`/`, `/letter`, `/ending`) with shared presentation components; this preserves the requested pacing without page reloads.
