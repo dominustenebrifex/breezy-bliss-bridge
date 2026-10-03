@@ -24,7 +24,7 @@ const positions = [[0,0], [32,-8], [-38,12], [48,18], [-50,-4], [28,26], [-22,22
 
 export function QuestionButtons({ onYes }: { onYes: () => void }) {
   const [count, setCount] = useState(0);
-  const position = positions[count] ?? positions[positions.length - 1];
+  const position = positions[count] ?? [42, -14];
   const scale = Math.max(0.38, 1 - count * 0.09);
   return (
     <div className="question-actions">
@@ -53,7 +53,7 @@ export function Reveal({ children, emphasis = false, className = "" }: { childre
     const node = ref.current;
     if (!node) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setShown(true); observer.disconnect(); }
+      if (entry?.isIntersecting) { setShown(true); observer.disconnect(); }
     }, { threshold: 0.12 });
     observer.observe(node);
     return () => observer.disconnect();
